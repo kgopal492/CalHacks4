@@ -13,12 +13,15 @@ export default TabNavigator(
   {
     Camera: {
       screen: CameraScreen,
+      color: "#5dc165",
     },
     Home: {
       screen: HomeScreen,
+      color: "#5dc165",
     },
     Settings: {
       screen: SettingsScreen,
+      color: "#5dc165",
     },
   },
   {
@@ -46,7 +49,7 @@ export default TabNavigator(
           <Ionicons
             name={iconName}
             size={36}
-            style={{ marginBottom: -3 }}
+            style={{ marginBottom: -3}}
             color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
           />
         );
@@ -55,6 +58,6 @@ export default TabNavigator(
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     animationEnabled: true,
-    swipeEnabled: false,
+    swipeEnabled: true,
   }
 );

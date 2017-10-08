@@ -18,7 +18,7 @@ export default class App extends React.Component {
   state = {
     imageUri: null,
     text: null,
-    status: 'No picture taken yet'
+    status: ''
   }
 
   render() {
@@ -44,11 +44,19 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <View>
+          <View style={styles.imageStyle}>
           {imageView}
-          <Text>STATUS: {this.state.status}</Text>
-          <TouchableHighlight style={styles.button} onPress={this._pickImage}>
-            <Text style={styles.buttonText}>Take a picture!</Text>
-          </TouchableHighlight>
+          </View>
+            <Entypo
+              name={"squared-plus"}
+              size={20}
+              style={{ marginBottom: -3}}
+              color={'#2f95dc'}
+            />
+          <TouchableOpacity style={styles.button}onPress={this._pickImage}>
+            <Text style={styles.refresh}>TAKE A PICTURE</Text>
+          </TouchableOpacity>
+          <Text style={{textAlign: "center"}}>{this.state.status}</Text>
         </View>
         <ScrollView>
           {textView}
@@ -143,19 +151,27 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5284f2',
+    backgroundColor: '#cdcdcd',
     alignItems: 'center',
     justifyContent: 'center',
   },
   button: {
-    backgroundColor: '#ffffff',
-    height: 60,
-    width: 200,
-    alignItems: 'center',
-    textAlign: 'center',
-    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  buttonText: {
-    fontSize: 20
+  refresh: {
+    padding: 10,
+    marginTop: 20,
+    textAlign: "center",
+    fontSize: 25,
+    color: "#444",    
+    radius: 10, 
+    alignItems: "center",
+    fontWeight: "bold",
+  },
+  imageStyle: {
+    width: 300,
+    height: 300,
+    backgroundColor: "#444",
   }
 });
