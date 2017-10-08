@@ -34,7 +34,7 @@ export default class BudgetPart extends Component {
           <Text>
           {(moneySpent && budget) ? (<Text style={styles.moneyDescription}>${moneySpent}/${budget}</Text>) : (null)}
           </Text>
-          {(progressPercent >= 1) ? (<Progress.Bar progress={1/(1 + (moneySpent-budget)/budget)} width={250*(1+((moneySpent-budget)/budget))} unfilledColor='red' />) : (<Progress.Bar progress={progressPercent} width={250} />)}
+          {(progressPercent >= 1) ? (<Progress.Bar color="#6075ff" progress={1/(1 + (moneySpent-budget)/budget)} width={250*(1+((moneySpent-budget)/budget))} unfilledColor='red' />) : (<Progress.Bar color="#6075ff" progress={progressPercent} width={250} />)}
           {(progressPercent >= 1) ? (<Text>You fudged up by ${moneySpent-budget}</Text>) : (null)}
         </View>
       </TouchableHighlight>
