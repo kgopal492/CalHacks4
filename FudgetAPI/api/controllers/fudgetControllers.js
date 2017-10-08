@@ -102,7 +102,7 @@ exports.read_receipt = function(req, res) {
         date_bought: dateOfPurchase,
         price: value,
         store_location: storeLocation,
-        category: cat;
+        category: cat
       };
       if(itemDetails.name != "total") {
         jsonOfItems.push(itemDetails);
