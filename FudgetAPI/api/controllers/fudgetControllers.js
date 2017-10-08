@@ -104,7 +104,7 @@ exports.read_receipt = function(req, res) {
         store_location: storeLocation,
         category: cat
       };
-      if(itemDetails.name != "TOTAL" || itemDetails.name != "SUBTOTAL" || itemDetails.name != "PAYMENT") {
+      if(itemDetails.name != "TOTAL" && itemDetails.name != "SUBTOTAL" && itemDetails.name != "PAYMENT") {
         jsonOfItems.push(itemDetails);
       }
     }      
