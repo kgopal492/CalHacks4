@@ -71,17 +71,18 @@ exports.read_receipt = function(req, res) {
   var storeLocation = TA[1].description; //the first element is always the store
   console.log(storeLocation);
   //set category. Use NLP later for better classification
-  if(storeLocation === 'Target') {
-    category = 'Groceries';
+  var cat;
+  if(storeLocation === 'TARGET') {
+    cat = 'Groceries';
   }
   else if(storeLocation === 'Starbucks'){
-    category = 'Coffee';
+    cat = 'Coffee';
   }
   else if(storeLocation === 'EXPECT'){
-    category = 'Groceries';
+    cat = 'Groceries';
   }
   else if(storeLocation === 'Order:'){
-    category = 'Restaurant/Food';
+    cat = 'Restaurant/Food';
   }
 
   var dateOfPurchase = new Date(); //date of purchase
@@ -101,6 +102,7 @@ exports.read_receipt = function(req, res) {
         date_bought: dateOfPurchase,
         price: value,
         store_location: storeLocation
+        category: cat;
       };
       if(itemDetails.name != "total") {
         jsonOfItems.push(itemDetails);
