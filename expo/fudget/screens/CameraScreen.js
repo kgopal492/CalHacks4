@@ -12,13 +12,15 @@ import {
 } from 'react-native';
 
 export default class App extends React.Component {
+
   static navigationOptions = {
     title: 'Camera',
   };
   state = {
     imageUri: null,
     text: null,
-    status: ''
+    status: '',
+    debug: false,
   }
 
   render() {
@@ -59,7 +61,7 @@ export default class App extends React.Component {
             <Text style={{textAlign: "center", color: "#444"}}>{this.state.status}</Text>
         
         </View>
-        
+          <Text>{textView}</Text>
         </ScrollView>
         </View>
       
@@ -110,9 +112,11 @@ export default class App extends React.Component {
       body: JSON.stringify(body),
     });
     const parsed = await response.json();
-    this.setState({
-      text: parsed.responses[0].textAnnotations[0].description,
-    });
+    if(this.state.debug){
+      this.setState({
+        text: parsed.responses[0].textAnnotations[0].description,
+      });
+    }
 
     // send to custom api
     this.setState({

@@ -55,10 +55,10 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <Text>{this.state.text}</Text>
-        <TouchableOpacity onPress={this._getBackupData}><Text style={styles.refresh}>Refresh</Text></TouchableOpacity>
-        <Progress.Pie progress={this.state.progPercent} size={100} style={styles.pieChart} color="#6075ff"/>
+        <TouchableOpacity onPress={this._getSortedData}><Text style={styles.refresh}>Refresh</Text></TouchableOpacity>
+        {(this.state.progPercent >= 1) ? (<Progress.Pie progress={1} size={100} style={styles.pieChart} color="red"/>) : (<Progress.Pie progress={this.state.progPercent} size={100} style={styles.pieChart} color="#6075ff"/>)}
         <View style={styles.remainderStyle}>
-          {(this.state.moneySpent)? <Text style={{fontSize: 24, color: "#555"}}>${this.state.moneySpent} spent!</Text> :  <Text  style={{fontSize: 24, color: "#555"}} >$0 spent!</Text>}
+          {(this.state.progPercent < 1) ? (<Text style={{fontSize: 24, color: "#555"}}>${this.state.moneySpent} spent!</Text>) :  (<Text style={{fontSize: 24, color: "#555"}}>${this.state.moneySpent} spent!!!</Text>)}
         </View>
         <FlatList
           data={this.state.budgets}
@@ -83,31 +83,31 @@ export default class App extends Component {
   }
 
   _getSortedData = async () => {
-    var categories = ['Groceries']
+    var categories = ['Food', 'Clothing', 'Coffee', 'Groceries', 'Other']
     var formatted_json = [];
     var totalMoneySpent = 0;
     for (var i = 0; i < categories.length; i++) {
       var unformatted_data = await this._getSortedDataHelper(categories[i]);
-      var budgetObj = {
-        type: categories[i],
-        budget: 10 + Math.floor(Math.random()*50),
-      };
-      var moneySpentSum;
+      var budgetObj = new Object();
+      var moneySpentSum = 0;
       for (var j = 0; j < unformatted_data.length; j++) {
-        moneySpentSum += unformatted_data[i].price;
+        moneySpentSum += unformatted_data[j].price;
       }
       totalMoneySpent += moneySpentSum;
-      budgetObj.moneySpent = moneySpentSum;
-      budgetObj.progPercent = moneySpent/maxBudget;
-      budgetObj.remaining = maxBudget - moneySpent;
+      var maxBudgetind = 10 + Math.floor(Math.random()*50);
+      budgetObj.type = categories[i];
+      budgetObj.budget = maxBudgetind;
+      budgetObj.moneySpent = moneySpentSum.toFixed(2);
+      budgetObj.moneyLeft = (maxBudgetind - moneySpentSum).toFixed(2);
+      budgetObj.percentage = (moneySpentSum/maxBudgetind);
+      budgetObj.id = categories[i];
       formatted_json.push(budgetObj);
     }
     var pseudoMaxBudget = 100 + Math.floor(Math.random()*50);
     this.setState({
-      text: JSON.stringify(formatted_json),
       budgets: formatted_json,
       maxBudget: pseudoMaxBudget,
-      moneySpent: totalMoneySpent,
+      moneySpent: totalMoneySpent.toFixed(2),
       progPercent: totalMoneySpent/pseudoMaxBudget,
       remaining: pseudoMaxBudget - totalMoneySpent,
     });
