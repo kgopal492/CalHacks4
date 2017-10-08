@@ -22,6 +22,9 @@ export default TabNavigator(
     },
   },
   {
+    tabBarOptions: {
+      activeTintColor: "#6075ff",
+    },
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
@@ -46,7 +49,7 @@ export default TabNavigator(
           <Ionicons
             name={iconName}
             size={36}
-            style={{ marginBottom: -3 }}
+            style={{ marginBottom: -3}}
             color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
           />
         );
@@ -55,6 +58,6 @@ export default TabNavigator(
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     animationEnabled: true,
-    swipeEnabled: false,
+    swipeEnabled: true,
   }
 );

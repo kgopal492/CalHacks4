@@ -27,10 +27,10 @@ export default class App extends Component {
     maxBudget: 1.0,
     moneySpent: 0.0,
     progPercent: 0.0,
-    remaining: 1.0,
+    moneyLeft: 1.0,
   }
   loadPage = () => {
-    this._getData();
+    this._getSortedData();
     //this._getBackupData();
   }
   keyExtractor = (item, index) => item.id;
@@ -43,6 +43,7 @@ export default class App extends Component {
         moneySpent = {item.moneySpent}
         moneyLeft = {item.moneyLeft}
         percentage = {item.percentage}
+
     />
       
   }
@@ -53,10 +54,11 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this._getData}><Text style={styles.refresh}>Refresh</Text></TouchableOpacity>
-        <Progress.Pie progress={this.state.progPercent} size={100} style={styles.pieChart}/>
+        <Text>{this.state.text}</Text>
+        <TouchableOpacity onPress={this._getSortedData}><Text style={styles.refresh}>Refresh</Text></TouchableOpacity>
+        {(this.state.progPercent >= 1) ? (<Progress.Pie progress={1} size={100} style={styles.pieChart} color="red"/>) : (<Progress.Pie progress={this.state.progPercent} size={100} style={styles.pieChart} color="#6075ff"/>)}
         <View style={styles.remainderStyle}>
-        {(this.state.moneySpent <= this.state.maxBudget) ? (<Text>$ {this.state.remaining} left!</Text>) : (<Text>${this.state.remaining} over!</Text>)}
+          {(this.state.progPercent < 1) ? (<Text style={{fontSize: 24, color: "#555"}}>${this.state.moneySpent} spent!</Text>) :  (<Text style={{fontSize: 24, color: "#555"}}>${this.state.moneySpent} spent!!!</Text>)}
         </View>
         <FlatList
           data={this.state.budgets}
@@ -64,7 +66,6 @@ export default class App extends Component {
           renderItem={this.renderBudget}
           style={styles.list}
         />
-        
       </View>
     );
   }
@@ -77,14 +78,54 @@ export default class App extends Component {
         'Content-Type': 'application/json'
       },
     });
+    var data_sorted = {};
     const data = await req_data.json();
+  }
+
+  _getSortedData = async () => {
+    var categories = ['Food', 'Clothing', 'Coffee', 'Groceries', 'Other']
+    var formatted_json = [];
+    var totalMoneySpent = 0;
+    for (var i = 0; i < categories.length; i++) {
+      var unformatted_data = await this._getSortedDataHelper(categories[i]);
+      var budgetObj = new Object();
+      var moneySpentSum = 0;
+      for (var j = 0; j < unformatted_data.length; j++) {
+        moneySpentSum += unformatted_data[j].price;
+      }
+      totalMoneySpent += moneySpentSum;
+      var maxBudgetind = 10 + Math.floor(Math.random()*50);
+      budgetObj.type = categories[i];
+      budgetObj.budget = maxBudgetind;
+      budgetObj.moneySpent = moneySpentSum.toFixed(2);
+      budgetObj.moneyLeft = (maxBudgetind - moneySpentSum).toFixed(2);
+      budgetObj.percentage = (moneySpentSum/maxBudgetind);
+      budgetObj.id = categories[i];
+      formatted_json.push(budgetObj);
+    }
+    var pseudoMaxBudget = 100 + Math.floor(Math.random()*50);
     this.setState({
-      budgets: data.topics,
-      maxBudget: data.totalBudget,
-      moneySpent: data.totalSpent,
-      progPercent: data.totalPercent,
-      remaining: data.remainder,
+      budgets: formatted_json,
+      maxBudget: pseudoMaxBudget,
+      moneySpent: totalMoneySpent.toFixed(2),
+      progPercent: totalMoneySpent/pseudoMaxBudget,
+      remaining: pseudoMaxBudget - totalMoneySpent,
     });
+  }
+
+  _getSortedDataHelper = async (category) => {
+    const req_data = await fetch('https://fudget-finance.herokuapp.com/sort', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'category': category,
+      }),
+    });
+    const data = await req_data.json();
+    return data;
   }
 
   _getBackupData = () => {
@@ -94,7 +135,7 @@ export default class App extends Component {
       maxBudget: data.totalBudget,
       moneySpent: data.totalSpent,
       progPercent: data.totalPercent,
-      remaining: data.remainder,
+      moneyLeft: data.moneyLeft,
     });
   }
 }
@@ -124,8 +165,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 15,
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: "#6075ff",
     borderRadius: 10,
+    color: "#555"
   }
 });
 

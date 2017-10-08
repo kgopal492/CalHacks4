@@ -1,6 +1,6 @@
 import Expo from 'expo';
 import React from 'react';
-import { Entypo } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import {
   StyleSheet,
   Text,
@@ -12,13 +12,15 @@ import {
 } from 'react-native';
 
 export default class App extends React.Component {
+
   static navigationOptions = {
     title: 'Camera',
   };
   state = {
     imageUri: null,
     text: null,
-    status: 'No picture taken yet'
+    status: '',
+    debug: false,
   }
 
   render() {
@@ -43,23 +45,32 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
+      <ScrollView>
         <View>
+          
+          <View style={styles.imageStyle}>
           {imageView}
-          <Text>STATUS: {this.state.status}</Text>
-          <TouchableHighlight style={styles.button} onPress={this._pickImage}>
-            <Text style={styles.buttonText}>Take a picture!</Text>
-          </TouchableHighlight>
+          </View>
+            <EvilIcons
+              name={"plus"}
+              size={100}
+              style={styles.addPic}
+              color={"#6075ff"}
+              onPress={this._pickImage}
+            />
+            <Text style={{textAlign: "center", color: "#444"}}>{this.state.status}</Text>
+        
         </View>
-        <ScrollView>
-          {textView}
+          <Text>{textView}</Text>
         </ScrollView>
-      </View>
+        </View>
+      
     );
   }
 
   _pickImage = async () => {
     this.setState({
-      status: 'analyzing...'
+      status: 'Analyzing...'
     });
     const {
       cancelled,
@@ -71,7 +82,6 @@ export default class App extends React.Component {
     if (!cancelled) {
       this.setState({
         imageUri: uri,
-        text: '(loading...)',
       });
     }
 
@@ -102,13 +112,15 @@ export default class App extends React.Component {
       body: JSON.stringify(body),
     });
     const parsed = await response.json();
-    this.setState({
-      text: parsed.responses[0].textAnnotations[0].description,
-    });
+    if(this.state.debug){
+      this.setState({
+        text: parsed.responses[0].textAnnotations[0].description,
+      });
+    }
 
     // send to custom api
     this.setState({
-      status: 'sending information to fudget parser...'
+      status: 'Parsing information...'
     });
     const response1 = await fetch('https://fudget-finance.herokuapp.com/receipt', {
       method: 'POST',
@@ -119,6 +131,12 @@ export default class App extends React.Component {
       body: JSON.stringify(parsed),
     });
     const parsed1 = await response1.json();
+    
+    /* 
+
+    this is where validation of the 'parsed' content happens
+
+    */
 
     this.setState({
       status: 'verified content. sending bits to be reconstructed...'
@@ -143,19 +161,31 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5284f2',
+    backgroundColor: '#efefef',
     alignItems: 'center',
     justifyContent: 'center',
   },
   button: {
-    backgroundColor: '#ffffff',
-    height: 60,
-    width: 200,
-    alignItems: 'center',
-    textAlign: 'center',
-    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  buttonText: {
-    fontSize: 20
+  refresh: {
+    padding: 10,
+    marginTop: 20,
+    textAlign: "center",
+    fontSize: 25,
+    color: "#444",    
+    radius: 10, 
+    alignItems: "center",
+    fontWeight: "bold",
+  },
+  imageStyle: {
+    width: 300,
+    height: 300,
+    backgroundColor: "#4444",
+  },
+  addPic: {
+    textAlign: "center",
+    marginTop: 15,
   }
 });
