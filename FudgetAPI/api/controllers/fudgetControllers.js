@@ -101,7 +101,7 @@ exports.read_receipt = function(req, res) {
         name : itemName,
         date_bought: dateOfPurchase,
         price: value,
-        store_location: storeLocation
+        store_location: storeLocation,
         category: cat;
       };
       if(itemDetails.name != "total") {
