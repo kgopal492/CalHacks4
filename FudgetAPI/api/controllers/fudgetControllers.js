@@ -80,6 +80,9 @@ exports.read_receipt = function(req, res) {
   else if(storeLocation === 'EXPECT'){
     category = 'Groceries';
   }
+  else if(storeLocation === 'Order:'){
+    category = 'Restaurant/Food';
+  }
 
   var dateOfPurchase = new Date(); //date of purchase
   var value;
