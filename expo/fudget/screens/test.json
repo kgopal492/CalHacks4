@@ -32,7 +32,8 @@
 		"id": "fghjk"
 	}],
 	"totalBudget": 100.00,
-	"totalSpent": 99.00,
-	"totalPercent": 0.99,
-	"remainder:": 1.00
+	"totalSpent": 90.00,
+	"moneyLeft:": 10.00,
+	"totalPercent": 0.90,
+	
 }

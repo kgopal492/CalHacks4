@@ -27,8 +27,7 @@ export default class App extends Component {
     maxBudget: 1.0,
     moneySpent: 0.0,
     progPercent: 0.0,
-    remaining: 1.0,
-    data: null,
+    moneyLeft: 1.0,
   }
   loadPage = () => {
     this._getSortedData();
@@ -44,6 +43,7 @@ export default class App extends Component {
         moneySpent = {item.moneySpent}
         moneyLeft = {item.moneyLeft}
         percentage = {item.percentage}
+
     />
       
   }
@@ -56,9 +56,9 @@ export default class App extends Component {
       <View style={styles.container}>
         <Text>{this.state.text}</Text>
         <TouchableOpacity onPress={this._getBackupData}><Text style={styles.refresh}>Refresh</Text></TouchableOpacity>
-        <Progress.Pie progress={this.state.progPercent} size={100} style={styles.pieChart}/>
+        <Progress.Pie progress={this.state.progPercent} size={100} style={styles.pieChart} color="#6075ff"/>
         <View style={styles.remainderStyle}>
-        {(this.state.moneySpent <= this.state.maxBudget) ? (<Text>$ {this.state.remaining} left!</Text>) : (<Text>${this.state.remaining} over!</Text>)}
+          {(this.state.moneySpent)? <Text style={{fontSize: 24, color: "#555"}}>${this.state.moneySpent} spent!</Text> :  <Text  style={{fontSize: 24, color: "#555"}} >$0 spent!</Text>}
         </View>
         <FlatList
           data={this.state.budgets}
@@ -135,7 +135,7 @@ export default class App extends Component {
       maxBudget: data.totalBudget,
       moneySpent: data.totalSpent,
       progPercent: data.totalPercent,
-      remaining: data.remainder,
+      moneyLeft: data.moneyLeft,
     });
   }
 }
@@ -165,8 +165,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 15,
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: "#6075ff",
     borderRadius: 10,
+    color: "#555"
   }
 });
 
