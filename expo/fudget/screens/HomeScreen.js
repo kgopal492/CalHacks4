@@ -28,9 +28,10 @@ export default class App extends Component {
     moneySpent: 0.0,
     progPercent: 0.0,
     remaining: 1.0,
+    data: null,
   }
   loadPage = () => {
-    this._getData();
+    this._getSortedData();
     //this._getBackupData();
   }
   keyExtractor = (item, index) => item.id;
@@ -53,6 +54,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text>{this.state.text}</Text>
         <TouchableOpacity onPress={this._getBackupData}><Text style={styles.refresh}>Refresh</Text></TouchableOpacity>
         <Progress.Pie progress={this.state.progPercent} size={100} style={styles.pieChart}/>
         <View style={styles.remainderStyle}>
@@ -64,7 +66,6 @@ export default class App extends Component {
           renderItem={this.renderBudget}
           style={styles.list}
         />
-        
       </View>
     );
   }
@@ -77,14 +78,54 @@ export default class App extends Component {
         'Content-Type': 'application/json'
       },
     });
+    var data_sorted = {};
     const data = await req_data.json();
+  }
+
+  _getSortedData = async () => {
+    var categories = ['Groceries']
+    var formatted_json = [];
+    var totalMoneySpent = 0;
+    for (var i = 0; i < categories.length; i++) {
+      var unformatted_data = await this._getSortedDataHelper(categories[i]);
+      var budgetObj = {
+        type: categories[i],
+        budget: 10 + Math.floor(Math.random()*50),
+      };
+      var moneySpentSum;
+      for (var j = 0; j < unformatted_data.length; j++) {
+        moneySpentSum += unformatted_data[i].price;
+      }
+      totalMoneySpent += moneySpentSum;
+      budgetObj.moneySpent = moneySpentSum;
+      budgetObj.progPercent = moneySpent/maxBudget;
+      budgetObj.remaining = maxBudget - moneySpent;
+      formatted_json.push(budgetObj);
+    }
+    var pseudoMaxBudget = 100 + Math.floor(Math.random()*50);
     this.setState({
-      budgets: data.topics,
-      maxBudget: data.totalBudget,
-      moneySpent: data.totalSpent,
-      progPercent: data.totalPercent,
-      remaining: data.remainder,
+      text: JSON.stringify(formatted_json),
+      budgets: formatted_json,
+      maxBudget: pseudoMaxBudget,
+      moneySpent: totalMoneySpent,
+      progPercent: totalMoneySpent/pseudoMaxBudget,
+      remaining: pseudoMaxBudget - totalMoneySpent,
     });
+  }
+
+  _getSortedDataHelper = async (category) => {
+    const req_data = await fetch('https://fudget-finance.herokuapp.com/sort', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'category': category,
+      }),
+    });
+    const data = await req_data.json();
+    return data;
   }
 
   _getBackupData = () => {
