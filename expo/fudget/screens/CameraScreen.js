@@ -56,11 +56,10 @@ export default class App extends React.Component {
               color={"#6075ff"}
               onPress={this._pickImage}
             />
-            <Text style={{textAlign: "center"}}>{this.state.status}</Text>
+            <Text style={{textAlign: "center", color: "#444"}}>{this.state.status}</Text>
         
         </View>
         
-          {textView}
         </ScrollView>
         </View>
       
@@ -69,7 +68,7 @@ export default class App extends React.Component {
 
   _pickImage = async () => {
     this.setState({
-      status: 'analyzing...'
+      status: 'Analyzing...'
     });
     const {
       cancelled,
@@ -81,7 +80,6 @@ export default class App extends React.Component {
     if (!cancelled) {
       this.setState({
         imageUri: uri,
-        text: '(loading...)',
       });
     }
 
@@ -118,7 +116,7 @@ export default class App extends React.Component {
 
     // send to custom api
     this.setState({
-      status: 'sending information to fudget parser...'
+      status: 'Parsing information...'
     });
     const response1 = await fetch('https://fudget-finance.herokuapp.com/receipt', {
       method: 'POST',
