@@ -53,7 +53,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this._getData}><Text style={styles.refresh}>Refresh</Text></TouchableOpacity>
+        <TouchableOpacity onPress={this._getBackupData}><Text style={styles.refresh}>Refresh</Text></TouchableOpacity>
         <Progress.Pie progress={this.state.progPercent} size={100} style={styles.pieChart}/>
         <View style={styles.remainderStyle}>
         {(this.state.moneySpent <= this.state.maxBudget) ? (<Text>$ {this.state.remaining} left!</Text>) : (<Text>${this.state.remaining} over!</Text>)}

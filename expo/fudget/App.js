@@ -21,7 +21,7 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           {Platform.OS === 'android' &&
             <View style={styles.statusBarUnderlay} />}
           <RootNavigation />
@@ -42,6 +42,7 @@ export default class App extends React.Component {
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
         { 'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf') },
+        { 'sacramento': require('./assets/fonts/Sacramento-Regular.ttf') },
       ]),
     ]);
   };
@@ -66,7 +67,4 @@ const styles = StyleSheet.create({
     height: 24,
     backgroundColor: 'rgba(0,0,0,0.2)',
   },
-  statusBarStyle: {
-    backgroundColor: "#5dc165",
-  }
 });

@@ -22,6 +22,14 @@
 		"moneyLeft": "3.00",
 		"percentage": "70",
 		"id": "odjkw" 
+	},
+	{
+		"type": "Groceries",
+		"budget": "40.00",
+		"moneySpent": "50.00",
+		"moneyLeft": "10.00",
+		"percentage": "75",
+		"id": "fghjk"
 	}],
 	"totalBudget": 100.00,
 	"totalSpent": 99.00,

@@ -20,7 +20,7 @@ export default class BudgetPart extends Component {
     moneySpent = this.props.moneySpent;
     moneyLeft = this.props.moneyLeft;
     percentage = this.props.percentage;
-    var progressPercent = moneySpent/moneyLeft;
+    var progressPercent = moneySpent/budget;
     return (
       <TouchableHighlight underlayColor="#999999"
         onPress={() => {
@@ -34,10 +34,10 @@ export default class BudgetPart extends Component {
           <Text>
           {(moneySpent && budget) ? (<Text style={styles.moneyDescription}>${moneySpent}/${budget}</Text>) : (null)}
           </Text>
-          <Progress.Bar progress={progressPercent} width={250} />
+          {(progressPercent >= 1) ? (<Progress.Bar progress={1/(1 + (moneySpent-budget)/budget)} width={250*(1+((moneySpent-budget)/budget))} unfilledColor='red' />) : (<Progress.Bar progress={progressPercent} width={250} />)}
+          {(progressPercent >= 1) ? (<Text>You fudged up by ${moneySpent-budget}</Text>) : (null)}
         </View>
       </TouchableHighlight>
-
     ); 
   }
 }
@@ -54,6 +54,10 @@ const styles = StyleSheet.create({
   },
   moneyDescription: {
     color: "#333333",
+    fontSize: 16,
+  },
+  overflow: {
+    color: "#ff0000",
     fontSize: 16,
   }
 });

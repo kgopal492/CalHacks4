@@ -1,7 +1,7 @@
 import { Notifications } from 'expo';
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-
+import { Text } from 'react-native';
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
@@ -14,8 +14,14 @@ const RootStackNavigator = StackNavigator(
   {
     navigationOptions: () => ({
       headerTitleStyle: {
-        fontWeight: 'normal',
-      }
+        fontSize: 26,
+        color: "transparent",
+        width: "100%",
+        justifyContent: "flex-end",
+        marginLeft: 30
+      },
+      headerLeft: <Text style={{paddingLeft: 20, paddingBottom: 10, fontSize: 31, marginRight: 20, fontFamily: 'sacramento', color: "#6075ff"}}>Fudget</Text>,
+      headerRight: <Text style={{color: "#444", fontSize: 26, paddingRight: 20,}}>{this.title}</Text> 
     }),
   }
 );

@@ -29,5 +29,22 @@ var ItemSchema = new Schema({
     default: ['Other']
   }
 });
-
 module.exports = mongoose.model('Items', ItemSchema);
+
+
+var BudgetSchema = new Schema({
+  category: {
+    type: String,
+    required: "Enter the category of this budget"
+  },
+  value: {
+    type: SchemaTypes.Double,
+    default: 0.0
+  },
+  maxValue: {
+    type: SchemaTypes.Double,
+    required: "Please enter a budget value"
+  }
+});
+module.exports = mongoose.model('Budgets', BudgetSchema);
+

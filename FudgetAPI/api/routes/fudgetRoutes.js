@@ -10,8 +10,8 @@ module.exports = function(app) {
   app.route('/sort')
     .post(fudget.list_sorted_items);
 
-  app.route('/totalspent')
-    .post(fudget.get_total_spent);
+  // app.route('/totalspent')
+  //   .post(fudget.get_total_spent);
 
   app.route('/items/:itemId')
     .get(fudget.read_an_item)

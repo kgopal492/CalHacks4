@@ -28,11 +28,19 @@ export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'Settings',
   };
-  componentWillMount() {
-    
+  async componentWillMount() {
+    // initiate values
+    const request = await fetch('https://fudget-finance.herokuapp.com/items', {
+    	method: 'GET',
+    	headers: {
+    		'Accept': 'application/json',
+    		'Content-Type': 'application/json',
+    	}
+    });
+    const data = await request.json();
   }
   render() {
-  	
+  	// everytime a value is changed, send to db
     return (
     	<View style={styles.container}>
     		<ScrollView style={styles.scrollingView}>

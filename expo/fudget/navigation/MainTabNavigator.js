@@ -13,18 +13,18 @@ export default TabNavigator(
   {
     Camera: {
       screen: CameraScreen,
-      color: "#5dc165",
     },
     Home: {
       screen: HomeScreen,
-      color: "#5dc165",
     },
     Settings: {
       screen: SettingsScreen,
-      color: "#5dc165",
     },
   },
   {
+    tabBarOptions: {
+      activeTintColor: "#6075ff",
+    },
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;

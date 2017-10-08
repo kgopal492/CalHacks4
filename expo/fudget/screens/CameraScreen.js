@@ -1,6 +1,6 @@
 import Expo from 'expo';
 import React from 'react';
-import { Entypo } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import {
   StyleSheet,
   Text,
@@ -43,25 +43,27 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
+      <ScrollView>
         <View>
+          
           <View style={styles.imageStyle}>
           {imageView}
           </View>
-            <Entypo
-              name={"squared-plus"}
-              size={20}
-              style={{ marginBottom: -3}}
-              color={'#2f95dc'}
+            <EvilIcons
+              name={"plus"}
+              size={100}
+              style={styles.addPic}
+              color={"#6075ff"}
+              onPress={this._pickImage}
             />
-          <TouchableOpacity style={styles.button}onPress={this._pickImage}>
-            <Text style={styles.refresh}>TAKE A PICTURE</Text>
-          </TouchableOpacity>
-          <Text style={{textAlign: "center"}}>{this.state.status}</Text>
+            <Text style={{textAlign: "center"}}>{this.state.status}</Text>
+        
         </View>
-        <ScrollView>
+        
           {textView}
         </ScrollView>
-      </View>
+        </View>
+      
     );
   }
 
@@ -127,6 +129,12 @@ export default class App extends React.Component {
       body: JSON.stringify(parsed),
     });
     const parsed1 = await response1.json();
+    
+    /* 
+
+    this is where validation of the 'parsed' content happens
+
+    */
 
     this.setState({
       status: 'verified content. sending bits to be reconstructed...'
@@ -151,7 +159,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#cdcdcd',
+    backgroundColor: '#efefef',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -172,6 +180,10 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: 300,
     height: 300,
-    backgroundColor: "#444",
+    backgroundColor: "#4444",
+  },
+  addPic: {
+    textAlign: "center",
+    marginTop: 15,
   }
 });
