@@ -77,6 +77,9 @@ exports.read_receipt = function(req, res) {
   else if(storeLocation === 'Starbucks'){
     category = 'Coffee';
   }
+  else if(storeLocation === 'EXPECT'){
+    category = 'Groceries';
+  }
 
   var dateOfPurchase = new Date(); //date of purchase
   var value;
