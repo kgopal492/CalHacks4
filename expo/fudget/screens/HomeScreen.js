@@ -23,6 +23,9 @@ export default class App extends Component {
     title: 'Home',
   };
   state = {
+    categories: ['Groceries', 'Restaurant/Food', 'Clothing', 'Other'],
+    pseudoMaxBudgetIndividual: 100,
+    pseudoMaxBudget: 200,
     budgets: [],
     maxBudget: 1.0,
     moneySpent: 0.0,
@@ -31,7 +34,6 @@ export default class App extends Component {
   }
   loadPage = () => {
     this._getSortedData();
-    //this._getBackupData();
   }
   keyExtractor = (item, index) => item.id;
   
@@ -59,6 +61,7 @@ export default class App extends Component {
         {(this.state.progPercent >= 1) ? (<Progress.Pie progress={1} size={100} style={styles.pieChart} color="red"/>) : (<Progress.Pie progress={this.state.progPercent} size={100} style={styles.pieChart} color="#6075ff"/>)}
         <View style={styles.remainderStyle}>
           {(this.state.progPercent < 1) ? (<Text style={{fontSize: 24, color: "#555"}}>${this.state.moneySpent} spent!</Text>) :  (<Text style={{fontSize: 24, color: "#555"}}>${this.state.moneySpent} spent!!!</Text>)}
+          <Text style={{fontSize: 20, color: "#555"}}>Your Budget: ${this.state.maxBudget}</Text>
         </View>
         <FlatList
           data={this.state.budgets}
@@ -83,7 +86,7 @@ export default class App extends Component {
   }
 
   _getSortedData = async () => {
-    var categories = ['Food', 'Clothing', 'Coffee', 'Groceries', 'Other']
+    var categories = this.state.categories;
     var formatted_json = [];
     var totalMoneySpent = 0;
     for (var i = 0; i < categories.length; i++) {
@@ -94,7 +97,7 @@ export default class App extends Component {
         moneySpentSum += unformatted_data[j].price;
       }
       totalMoneySpent += moneySpentSum;
-      var maxBudgetind = 10 + Math.floor(Math.random()*50);
+      var maxBudgetind = this.state.pseudoMaxBudgetIndividual;
       budgetObj.type = categories[i];
       budgetObj.budget = maxBudgetind;
       budgetObj.moneySpent = moneySpentSum.toFixed(2);
@@ -103,7 +106,7 @@ export default class App extends Component {
       budgetObj.id = categories[i];
       formatted_json.push(budgetObj);
     }
-    var pseudoMaxBudget = 100 + Math.floor(Math.random()*50);
+    var pseudoMaxBudget = this.state.pseudoMaxBudget;
     this.setState({
       budgets: formatted_json,
       maxBudget: pseudoMaxBudget,
